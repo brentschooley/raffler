@@ -10,7 +10,7 @@ module.exports = {
     // request signature verification and setting up webhooks for new Twilio
     // numbers.
     server: {
-        host: 'twilio-raffler.herokuapp.com',
+        host: 'twilio-brent-raffler.herokuapp.com',
         protocol: 'https'
     },
 

@@ -41,4 +41,3 @@ exports.voice = function(request, response) {
     });
     response.send(twiml);
 };
-

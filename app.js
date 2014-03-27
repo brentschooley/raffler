@@ -64,5 +64,3 @@ app.get('/raffles/:id', secure, auth, raffleController.show);
 
 // Delete a raffle
 app.delete('/raffles/:id', secure, auth, raffleController.remove);
-
-
