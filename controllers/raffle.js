@@ -23,11 +23,21 @@ exports.create = function(request, response) {
 
     raffle.save(function(err, doc) {
         if (!err) {
-            return client.incomingPhoneNumbers('PN7d046e26914f3059f681e2ea5eafc041').put({
-                  friendlyName: '[The Raffler]: '+doc.name,
-                  smsUrl: config.server.protocol +
-                    '://' + config.server.host +
-                    '/raffles/'+doc._id
+            // Programmatically buy a twilio number
+            client.availablePhoneNumbers('US').local.get({
+                smsEnabled:true
+            }).then(function(results) {
+                if (results.availablePhoneNumbers.length < 1) {
+                    throw { message: 'No phone numbers available' };
+                }
+
+                return client.incomingPhoneNumbers.create({
+                    phoneNumber: results.availablePhoneNumbers[0].phoneNumber,
+                    friendlyName: '[The Raffler]: '+doc.name,
+                    smsUrl: config.server.protocol +
+                        '://' + config.server.host +
+                        '/raffles/'+doc._id
+                });
             }).then(function(data) {
                 raffle.twilioNumber = data.phoneNumber;
                 raffle.twilioNumberSid = data.sid;
